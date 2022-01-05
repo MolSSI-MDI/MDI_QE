@@ -1,6 +1,6 @@
-code_name: 'UNKNOWN'
+code_name: 'QE'
 docker:
-  image_name: 'mdiengine'
+  image_name: 'mdi/qe'
 
   build_image:
     - apt-get update
@@ -14,8 +14,11 @@ docker:
         git clone --branch mdi https://github.com/MolSSI-MDI/q-e.git build/q-e
       fi
     - cd build/q-e
-    #- ./configure CC=icc CXX=icpc F77=ifort F90=ifort FC=ifort CPP=cpp MPIF90=mpiifort -enable-parallel -enable-openmp
-    - ./configure -enable-parallel -enable-openmp
+    # Configuring requires a full rebuild, so only do it once
+    - |
+      if [ ! -f "PW/src/pw.x" ]; then
+        ./configure -enable-parallel -enable-openmp
+      fi
     - make -j 4 pw
 
 
@@ -28,3 +31,9 @@ engine_tests:
   script:
     - cd tests/water
     - ../../build/q-e/PW/src/pw.x -in qe.in -mdi "${MDI_OPTIONS}"
+
+test_drivers:
+  test_driver:
+    script:
+      - cd tests/drivers
+      - python driver.py -mdi "-role DRIVER -name driver -method TCP -port 8021"
