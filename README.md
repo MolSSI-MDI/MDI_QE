@@ -1,6 +1,6 @@
-# MDI Mechanic UNKNOWN report
+# MDI Mechanic QE report
 
-This repo presents test results for the MDI interface implementation in the UNKNOWN code.
+This repo presents test results for the MDI interface implementation in the QE code.
 
 To view the README.md offline, it is suggested that you use grip (i.e., `pip install grip`).
 
@@ -43,19 +43,19 @@ Supported commands are indicated in green, while unsupported commands are indica
 | &lt;@ | ![command](report/badges/box-lightgray.svg) |
 | &lt;CELL | ![command](report/badges/box-brightgreen.svg) |
 | &lt;CELL_DISPL | ![command](report/badges/box-lightgray.svg) |
-| &lt;CHARGES | ![command](report/badges/box-lightgray.svg) |
-| &lt;COORDS | ![command](report/badges/box-lightgray.svg) |
+| &lt;CHARGES | ![command](report/badges/box-brightgreen.svg) |
+| &lt;COORDS | ![command](report/badges/box-brightgreen.svg) |
 | &lt;DIMENSIONS | ![command](report/badges/box-lightgray.svg) |
 | &lt;ELEC_MULT | ![command](report/badges/box-lightgray.svg) |
 | &lt;ELEMENTS | ![command](report/badges/box-lightgray.svg) |
 | &lt;ENERGY | ![command](report/badges/box-brightgreen.svg) |
-| &lt;FORCES | ![command](report/badges/box-lightgray.svg) |
+| &lt;FORCES | ![command](report/badges/box-brightgreen.svg) |
 | &lt;KE | ![command](report/badges/box-lightgray.svg) |
 | &lt;KE_ELEC | ![command](report/badges/box-lightgray.svg) |
 | &lt;KE_NUC | ![command](report/badges/box-lightgray.svg) |
 | &lt;MASSES | ![command](report/badges/box-lightgray.svg) |
 | &lt;NAME | ![command](report/badges/box-brightgreen.svg) |
-| &lt;NATOMS | ![command](report/badges/box-lightgray.svg) |
+| &lt;NATOMS | ![command](report/badges/box-brightgreen.svg) |
 | &lt;PE | ![command](report/badges/box-lightgray.svg) |
 | &lt;PE_ELEC | ![command](report/badges/box-lightgray.svg) |
 | &lt;PE_NUC | ![command](report/badges/box-lightgray.svg) |
@@ -66,7 +66,7 @@ Supported commands are indicated in green, while unsupported commands are indica
 | &gt;CELL | ![command](report/badges/box-brightgreen.svg) |
 | &gt;CELL_DISPL | ![command](report/badges/box-lightgray.svg) |
 | &gt;CHARGES | ![command](report/badges/box-lightgray.svg) |
-| &gt;COORDS | ![command](report/badges/box-lightgray.svg) |
+| &gt;COORDS | ![command](report/badges/box-brightgreen.svg) |
 | &gt;ELEC_MULT | ![command](report/badges/box-lightgray.svg) |
 | &gt;ENERGY | ![command](report/badges/box-lightgray.svg) |
 | &gt;FORCES | ![command](report/badges/box-lightgray.svg) |
