@@ -3,15 +3,25 @@ docker:
   image_name: 'mdiengine'
 
   build_image:
-    - echo "Insert commands to build the environment for the engine here"
-    - echo "This will often include using apt-get or pip to install dependencies"
+    - apt-get update
+    - apt-get install -y git wget
+    - pip install cmake
+    - pip install pymdi
 
   build_engine:
-    - echo "Insert commands to build your engine code here"
+    - |
+      if [ ! -d "build/q-e" ]; then
+        git clone --branch mdi https://github.com/MolSSI-MDI/q-e.git build/q-e
+      fi
+    - cd build/q-e
+    #- ./configure CC=icc CXX=icpc F77=ifort F90=ifort FC=ifort CPP=cpp MPIF90=mpiifort -enable-parallel -enable-openmp
+    - ./configure -enable-parallel -enable-openmp
+    - make -j 4 pw
+
 
   validate_engine:
-    - echo "Insert code that will confirm that your code has been built successfully"
-    - exit 1
+    - cd tests/water
+    - ../../build/q-e/PW/src/pw.x -in qe.in -mdi "${MDI_OPTIONS}"
 
 engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
