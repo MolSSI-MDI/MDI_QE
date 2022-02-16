@@ -34,8 +34,8 @@ run_scripts:
       container1:
         image: 'mdi/qe'
         script:
-          - cd build/q-e/mdi/build
-          - ./driver_plug_c -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/COUPLE/src"
+          - cd tests/water
+          - ../../build/q-e/mdi/build/driver_plug_c -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/COUPLE/src"
 
   plugin_python:
     containers:
