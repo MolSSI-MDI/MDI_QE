@@ -12,13 +12,13 @@ docker:
   build_engine:
     - |
       if [ ! -d "build/q-e" ]; then
-        git clone --branch mdi https://github.com/MolSSI-MDI/q-e.git build/q-e
+        git clone --branch mdi_plugin https://github.com/MolSSI-MDI/q-e.git build/q-e
       fi
     - cd build/q-e
     # Configuring requires a full rebuild, so only do it once
     - |
       if [ ! -f "PW/src/pw.x" ]; then
-        ./configure --enable-parallel --enable-openmp --enable-shared
+        ./configure --enable-parallel --enable-openmp --enable-shared FFLAGS="-fPIC" FCFLAGS="-fPIC" CFLAGS="-fPIC" foxflags="-fPIC" try_foxflags="-fPIC"
       fi
     - make -j 4 pw cp couple
 
