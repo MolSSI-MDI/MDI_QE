@@ -24,6 +24,7 @@ docker:
 
 
   validate_engine:
+    - export LD_LIBRARY_PATH=/repo/build/q-e/mdi/build/MDI_Library
     - cd tests/water
     - ../../build/q-e/PW/src/pw.x -in qe.in
 
@@ -47,6 +48,7 @@ run_scripts:
 engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
   script:
+    - export LD_LIBRARY_PATH=/repo/build/q-e/mdi/build/MDI_Library
     - cd tests/water
     - ../../build/q-e/PW/src/pw.x -in qe.in -mdi "${MDI_OPTIONS}"
 
