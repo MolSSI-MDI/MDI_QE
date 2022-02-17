@@ -20,7 +20,7 @@ docker:
       if [ ! -f "PW/src/pw.x" ]; then
         ./configure --enable-parallel --enable-openmp --enable-shared FFLAGS="-fPIC" FCFLAGS="-fPIC" CFLAGS="-fPIC" foxflags="-fPIC" try_foxflags="-fPIC"
       fi
-    - make -j 4 pw cp couple
+    - make -j 4 mdi couple
 
 
   validate_engine:
