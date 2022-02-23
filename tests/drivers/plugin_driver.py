@@ -42,7 +42,7 @@ print("BEFORE")
 
 # Connect to the engine
 #comm = mdi.MDI_Accept_Communicator()
-plugin_name = "qecouple"
+plugin_name = "qemdi"
 #plugin_name = "inqmdi"
 #plugin_name = "engine_cxx"
 mpi_world = MPI.COMM_WORLD

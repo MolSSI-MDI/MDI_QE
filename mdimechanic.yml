@@ -4,23 +4,39 @@ docker:
 
   build_image:
     - apt-get update
-    - apt-get install -y git wget
+    - apt-get install -y git wget vim
     - pip install cmake
     - pip install pymdi
     - pip install mpi4py
 
   build_engine:
     - |
+      if [ ! -d "build_copy/q-e" ]; then
+        git clone --branch mdi_plugin https://github.com/MolSSI-MDI/q-e.git build_copy/q-e
+      fi
+    - |
       if [ ! -d "build/q-e" ]; then
-        git clone --branch mdi_plugin https://github.com/MolSSI-MDI/q-e.git build/q-e
+        cp -r build_copy build
       fi
     - cd build/q-e
+
     # Configuring requires a full rebuild, so only do it once
     - |
       if [ ! -f "PW/src/pw.x" ]; then
         ./configure --enable-parallel --enable-openmp --enable-shared FFLAGS="-fPIC" FCFLAGS="-fPIC" CFLAGS="-fPIC" foxflags="-fPIC" try_foxflags="-fPIC"
       fi
-    - make -j 4 mdi couple
+    - make -j 4 mdi
+
+    # Build a copy of the MDI Library for testing purposes
+    - cd /repo
+    - |
+      if [ ! -d "build/MDI_Library" ]; then
+        git clone https://github.com/MolSSI-MDI/MDI_Library.git build/MDI_Library
+      fi
+    - mkdir -p build/MDI_Library/build
+    - cd build/MDI_Library/build
+    - cmake -Dtest_codes=ON ..
+    - make
 
 
   validate_engine:
@@ -35,7 +51,15 @@ run_scripts:
         image: 'mdi/qe'
         script:
           - cd tests/water
-          - ../../build/q-e/mdi/build/driver_plug_c -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/COUPLE/src"
+          - ../../build/q-e/mdi/build/driver_plug_c -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
+
+  plugin_cxx:
+    containers:
+      container1:
+        image: 'mdi/qe'
+        script:
+          - cd tests/water
+          - ../../build/MDI_Library/build/driver_plug_cxx -driver_nranks 0 -plugin_nranks 1 -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
 
   plugin_python:
     containers:
@@ -43,7 +67,7 @@ run_scripts:
         image: 'mdi/qe'
         script:
           - cd tests/drivers
-          - python plugin_driver.py -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/COUPLE/src"
+          - python plugin_driver.py -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
 
 engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
