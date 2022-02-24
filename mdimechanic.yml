@@ -6,7 +6,7 @@ docker:
     - apt-get update
     - apt-get install -y git wget vim
     - pip install cmake
-    - pip install pymdi
+    #- pip install pymdi
     - pip install mpi4py
 
   build_engine:
@@ -66,8 +66,10 @@ run_scripts:
       container1:
         image: 'mdi/qe'
         script:
-          - cd tests/drivers
-          - python plugin_driver.py -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
+          #- cd tests/drivers
+          #- python plugin_driver.py -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
+          - cd tests/water
+          - python ../../build/MDI_Library/build/driver_plug_py.py -plugin_name qemdi -driver_nranks 0 -plugin_nranks 1 -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
 
 engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
