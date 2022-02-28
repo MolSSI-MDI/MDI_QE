@@ -16,7 +16,7 @@ docker:
       fi
     - |
       if [ ! -d "build/q-e" ]; then
-        cp -r build_copy build/q-e
+        cp -r build_copy/q-e build/q-e
       fi
     - cd build/q-e
 
