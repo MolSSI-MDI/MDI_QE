@@ -16,7 +16,7 @@ docker:
       fi
     - |
       if [ ! -d "build/q-e" ]; then
-        cp -r build_copy build
+        cp -r build_copy build/q-e
       fi
     - cd build/q-e
 
@@ -69,6 +69,8 @@ run_scripts:
           #- cd tests/drivers
           #- python plugin_driver.py -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
           - cd tests/water
+          #- export LD_LIBRARY_PATH=/repo/build/MDI_Library/build/MDI_Library
+          #- export RPATH=/repo/build/MDI_Library/build/MDI_Library
           - python ../../build/MDI_Library/build/driver_plug_py.py -plugin_name qemdi -driver_nranks 0 -plugin_nranks 1 -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
 
 engine_tests:
