@@ -1,31 +1,9 @@
+import mdi
 import sys
-import time
+import argparse
+from mpi4py import MPI
 
-try: # Check for local build
-    import MDI_Library as mdi
-except: # Check for installed package
-    import mdi
-
-try:
-    import numpy as np
-    use_numpy = True
-except ImportError:
-    use_numpy = False
-
-# Check for a -nompi argument
-# This argument prevents the code from importing MPI
-nompi_flag = False
-for arg in sys.argv:
-    if arg == "-nompi":
-        nompi_flag = True
-
-use_mpi4py = False
-if not nompi_flag:
-    try:
-        from mpi4py import MPI
-        use_mpi4py = True
-    except ImportError:
-        pass
+use_mpi4py = True
 
 def code_for_plugin_instance(mpi_comm, mdi_comm, class_object):
     mpi_rank = 0
@@ -63,28 +41,16 @@ if __name__ == "__main__":
 
     # Parse command-line arguments
     mdi_options = None
-    driver_nranks = -1
-    plugin_nranks = -1
     plugin_name = None
     for iarg in range( len(sys.argv) ):
-        if sys.argv[iarg] == "-mdi":
+        if sys.argv[iarg] == "--mdi":
             mdi_options = sys.argv[iarg+1]
             iarg += 1
-        elif sys.argv[iarg] == "-driver_nranks":
-            driver_nranks = int(sys.argv[iarg+1])
-            iarg += 1
-        elif sys.argv[iarg] == "-plugin_nranks":
-            plugin_nranks = int(sys.argv[iarg+1])
-            iarg += 1
-        elif sys.argv[iarg] == "-plugin_name":
+        elif sys.argv[iarg] == "--plugin_name":
             plugin_name = sys.argv[iarg+1]
             iarg += 1
     if mdi_options is None:
         raise Exception("-mdi command-line option was not provided")
-    if driver_nranks < 0:
-        raise Exception("-driver_nranks command-line option is not valid")
-    if plugin_nranks < 0:
-        raise Exception("-plugin_nranks command-line option is not valid")
     if plugin_name is None:
         raise Exception("-plugin_name command-line option was not provided")
 
