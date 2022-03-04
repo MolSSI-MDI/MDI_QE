@@ -50,11 +50,11 @@ class PluginInstance:
 
         # Find out if the plugin supports the >NATOMS command
         natoms_supported = 0
-        if my_rank == 0:
-            natoms_supported = mdi.MDI_Check_command_exists("@DEFAULT", ">NATOMS", mdi_comm)
-        mpi_comm.bcast(natoms_supported, root=0)
-        print("exists: " + str(natoms_supported))
-        
+        #if my_rank == 0:
+        #    natoms_supported = mdi.MDI_Check_command_exists("@DEFAULT", ">NATOMS", mdi_comm)
+        #mpi_comm.bcast(natoms_supported, root=0)
+        #print("exists: " + str(natoms_supported))
+
         if natoms_supported:
 
             # Send the number of atoms to the plugin
@@ -62,17 +62,17 @@ class PluginInstance:
             mdi.MDI_Send(self.natoms, 1, mdi.MDI_INT, mdi_comm)
 
         else:
-        
+
             # We will assume the plugin has read the correct number
             #    of atoms from an input file.
             pass
 
         # Find out if the plugin supports the >ELEMENTS command
         elem_supported = 0
-        if my_rank == 0:
-            elem_supported = mdi.MDI_Check_command_exists("@DEFAULT", ">ELEMENTS", mdi_comm)
-        mpi_comm.bcast(elem_supported, root=0)
-        print("exists: " + str(elem_supported))
+        #if my_rank == 0:
+        #    elem_supported = mdi.MDI_Check_command_exists("@DEFAULT", ">ELEMENTS", mdi_comm)
+        #mpi_comm.bcast(elem_supported, root=0)
+        #print("exists: " + str(elem_supported))
 
         if elem_supported:
 
@@ -81,7 +81,7 @@ class PluginInstance:
             mdi.MDI_Send(self.elements, self.natoms, mdi.MDI_INT, mdi_comm)
 
         else:
-        
+
             # We will assume the plugin has read the correct element
             #    of each atom from an input file.
             pass
