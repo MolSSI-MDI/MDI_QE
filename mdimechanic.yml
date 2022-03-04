@@ -6,10 +6,11 @@ docker:
     - apt-get update
     - apt-get install -y git wget vim
     - pip install cmake
-    #- pip install pymdi
+    - pip install pymdi
     - pip install mpi4py
 
   build_engine:
+    - mkdir -p build
     - |
       if [ ! -d "build_copy/q-e" ]; then
         git clone --branch mdi_plugin https://github.com/MolSSI-MDI/q-e.git build_copy/q-e
@@ -71,7 +72,10 @@ run_scripts:
           - cd tests/water
           #- export LD_LIBRARY_PATH=/repo/build/MDI_Library/build/MDI_Library
           #- export RPATH=/repo/build/MDI_Library/build/MDI_Library
-          - python ../../build/MDI_Library/build/driver_plug_py.py -plugin_name qemdi -driver_nranks 0 -plugin_nranks 1 -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
+          #- python ../../build/MDI_Library/build/driver_plug_py.py -plugin_name qemdi -driver_nranks 0 -plugin_nranks 1 -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
+          - python ../drivers/driver_plug_py.py -plugin_name qemdi -driver_nranks 0 -plugin_nranks 1 -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
+
+
 
 engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
