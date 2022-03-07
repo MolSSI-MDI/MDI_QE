@@ -54,8 +54,7 @@ run_scripts:
         script:
           - export OMP_NUM_THREADS=1
           - cd tests/water
-          #- mpiexec -n 2 python ../drivers/driver_plug_py.py -plugin_name qemdi -driver_nranks 0 -plugin_nranks 1 -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
-          - mpiexec -n 2 python ../drivers/plugin_driver.py --plugin_name "qemdi" --mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
+          - mpiexec -n 2 python ../drivers/plugin_driver.py --plugin_name "qemdi" --mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src" --plugin_command_line "--in qe.in"
 
   plugin_c:
     containers:

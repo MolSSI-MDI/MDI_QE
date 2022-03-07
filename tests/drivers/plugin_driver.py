@@ -50,10 +50,8 @@ class PluginInstance:
 
         # Find out if the plugin supports the >NATOMS command
         natoms_supported = 0
-        #if my_rank == 0:
-        #    natoms_supported = mdi.MDI_Check_command_exists("@DEFAULT", ">NATOMS", mdi_comm)
-        #mpi_comm.bcast(natoms_supported, root=0)
-        #print("exists: " + str(natoms_supported))
+        natoms_supported = mdi.MDI_Check_command_exists("@DEFAULT", ">NATOMS", mdi_comm)
+        natoms_supported = mpi_comm.bcast(natoms_supported, root=0)
 
         if natoms_supported:
 
@@ -69,10 +67,8 @@ class PluginInstance:
 
         # Find out if the plugin supports the >ELEMENTS command
         elem_supported = 0
-        #if my_rank == 0:
-        #    elem_supported = mdi.MDI_Check_command_exists("@DEFAULT", ">ELEMENTS", mdi_comm)
-        #mpi_comm.bcast(elem_supported, root=0)
-        #print("exists: " + str(elem_supported))
+        elem_supported = mdi.MDI_Check_command_exists("@DEFAULT", ">ELEMENTS", mdi_comm)
+        elem_supported = mpi_comm.bcast(elem_supported, root=0)
 
         if elem_supported:
 
