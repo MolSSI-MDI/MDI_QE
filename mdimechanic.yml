@@ -43,7 +43,14 @@ docker:
   validate_engine:
     - export LD_LIBRARY_PATH=/repo/build/q-e/mdi/build/MDI_Library
     - cd tests/water
-    - ../../build/q-e/PW/src/pw.x -in qe.in
+    #- mpirun -n 1 ../../build/q-e/PW/src/pw.x -in qe.in
+    
+engine_tests:
+  # Provide at least one example input that can be used to test your code's MDI functionality
+  script:
+    - export LD_LIBRARY_PATH="/repo/build/q-e/mdi/build/MDI_Library:/repo/build/q-e/MDI/src"
+    - cd tests/water
+    - /repo/build/q-e/MDI/src/qemdi.x -mdi "${MDI_OPTIONS}"
 
 run_scripts:
 
@@ -88,12 +95,12 @@ run_scripts:
 
 
 
-engine_tests:
+#engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
-  script:
-    - export LD_LIBRARY_PATH=/repo/build/q-e/mdi/build/MDI_Library
-    - cd tests/water
-    - ../../build/q-e/PW/src/pw.x -in qe.in -mdi "${MDI_OPTIONS}"
+#  script:
+#    - export LD_LIBRARY_PATH=/repo/build/q-e/mdi/build/MDI_Library
+#    - cd tests/water
+#    - ../../build/q-e/PW/src/pw.x -in qe.in -mdi "${MDI_OPTIONS}"
 
 test_drivers:
   test_driver:
