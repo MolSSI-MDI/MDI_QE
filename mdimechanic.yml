@@ -12,12 +12,8 @@ docker:
   build_engine:
     - mkdir -p build
     - |
-      if [ ! -d "build_copy/q-e" ]; then
-        git clone --branch mdi_plugin https://github.com/MolSSI-MDI/q-e.git build_copy/q-e
-      fi
-    - |
       if [ ! -d "build/q-e" ]; then
-        cp -r build_copy/q-e build/q-e
+        git clone --branch mdi_plugin https://github.com/MolSSI-MDI/q-e.git build/q-e
       fi
     - cd build/q-e
 
