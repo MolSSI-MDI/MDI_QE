@@ -56,10 +56,10 @@ Supported commands are indicated in green, while unsupported commands are indica
 | &lt;MASSES | ![command](report/badges/box-lightgray.svg) |
 | &lt;NAME | ![command](report/badges/box-brightgreen.svg) |
 | &lt;NATOMS | ![command](report/badges/box-brightgreen.svg) |
-| &lt;PE | ![command](report/badges/box-lightgray.svg) |
+| &lt;PE | ![command](report/badges/box-brightgreen.svg) |
 | &lt;PE_ELEC | ![command](report/badges/box-lightgray.svg) |
 | &lt;PE_NUC | ![command](report/badges/box-lightgray.svg) |
-| &lt;STRESS | ![command](report/badges/box-lightgray.svg) |
+| &lt;STRESS | ![command](report/badges/box-brightgreen.svg) |
 | &lt;TOTCHARGE | ![command](report/badges/box-lightgray.svg) |
 | &lt;VELOCITIES | ![command](report/badges/box-lightgray.svg) |
 | &gt;+FORCES | ![command](report/badges/box-lightgray.svg) |
