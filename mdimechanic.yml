@@ -19,10 +19,10 @@ docker:
 
     # Configuring requires a full rebuild, so only do it once
     - |
-      if [ ! -f "PW/src/pw.x" ]; then
-        ./configure --enable-parallel --enable-openmp --enable-shared FFLAGS="-fPIC" FCFLAGS="-fPIC" CFLAGS="-fPIC" try_foxflags="-fPIC"
+      if [ ! -f "/repo/build/q-e/MDI/src/qemdi.x" ]; then
+        ./configure --enable-parallel --enable-openmp --enable-shared FFLAGS="-fPIC -cpp" FCFLAGS="-fPIC -cpp" CFLAGS="-fPIC -cpp" try_foxflags="-fPIC -cpp"
       fi
-    - make -j 4 mdi
+    - make -j 1 mdi
 
     # Build a copy of the MDI Library for testing purposes
     - cd /repo
@@ -89,7 +89,14 @@ run_scripts:
           #- python ../../build/MDI_Library/build/driver_plug_py.py -plugin_name qemdi -driver_nranks 0 -plugin_nranks 1 -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
           - mpiexec -n 2 python ../drivers/driver_plug_py.py --plugin_name "qemdi" --mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
 
-
+  test:
+    containers:
+      container1:
+        image: 'mdi/qe'
+        script:
+          - export LD_LIBRARY_PATH="/repo/build/q-e/mdi/build/mdi_build-prefix/src/mdi_build-build/MDI_Library:/repo/build/q-e/MDI/src"
+          - cd tests/water
+          - /repo/build/q-e/PW/src/pw.x -in qe.in
 
 #engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
@@ -103,3 +110,5 @@ test_drivers:
     script:
       - cd tests/drivers
       - python driver.py -mdi "-role DRIVER -name driver -method TCP -port 8021"
+
+
