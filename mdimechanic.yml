@@ -1,10 +1,20 @@
 code_name: 'QE'
 docker:
-  image_name: 'mdi/qe'
+  image_name: 'mdi/qe-intel'
 
   build_image:
     - apt-get update
-    - apt-get install -y git wget vim
+    - apt-get install -y git wget vim gpg-agent
+
+    # download the key to system keyring
+    - wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+
+    # add signed entry to apt sources and configure the APT client to use Intel repository:
+    - echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list
+    - apt update
+    - apt install intel-basekit -y
+    - apt install intel-hpckit -y
+
     - pip install cmake
     - pip install pymdi
     - pip install mpi4py
@@ -24,17 +34,6 @@ docker:
       fi
     - make -j 1 mdi
 
-    # Build a copy of the MDI Library for testing purposes
-    - cd /repo
-    - |
-      if [ ! -d "build/MDI_Library" ]; then
-        git clone https://github.com/MolSSI-MDI/MDI_Library.git build/MDI_Library
-      fi
-    - mkdir -p build/MDI_Library/build
-    - cd build/MDI_Library/build
-    - cmake -Dtest_codes=ON ..
-    - make
-
 
   validate_engine:
     - export LD_LIBRARY_PATH=/repo/build/q-e/mdi/build/mdi_build-prefix/src/mdi_build-build/MDI_Library
@@ -44,7 +43,10 @@ docker:
 engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
   script:
-    - export LD_LIBRARY_PATH="/repo/build/q-e/mdi/build/mdi_build-prefix/src/mdi_build-build/MDI_Library:/repo/build/q-e/MDI/src"
+    #- source /opt/intel/oneapi/setvars.sh --force
+    - export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/intel/oneapi/mkl/2022.2.0/lib/intel64/"
+    - export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/intel/oneapi/mkl/2022.2.0/lib/intel64/"
+    - export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/repo/build/q-e/mdi/build/mdi_build-prefix/src/mdi_build-build/MDI_Library:/repo/build/q-e/MDI/src"
     - cd tests/water
     - /repo/build/q-e/MDI/src/qemdi.x -mdi "${MDI_OPTIONS}" -in qe.in
 
@@ -53,7 +55,7 @@ run_scripts:
   plugin:
     containers:
       container1:
-        image: 'mdi/qe'
+        image: 'mdi/qe-intel'
         script:
           - export OMP_NUM_THREADS=1
           - cd tests/water
@@ -62,7 +64,7 @@ run_scripts:
   plugin_c:
     containers:
       container1:
-        image: 'mdi/qe'
+        image: 'mdi/qe-intel'
         script:
           - cd tests/water
           - ../../build/q-e/mdi/build/driver_plug_c -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
@@ -70,7 +72,7 @@ run_scripts:
   plugin_cxx:
     containers:
       container1:
-        image: 'mdi/qe'
+        image: 'mdi/qe-intel'
         script:
           - cd tests/water
           - ../../build/MDI_Library/build/driver_plug_cxx -driver_nranks 0 -plugin_nranks 1 -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
@@ -78,7 +80,7 @@ run_scripts:
   plugin_python:
     containers:
       container1:
-        image: 'mdi/qe'
+        image: 'mdi/qe-intel'
         script:
           - export OMP_NUM_THREADS=1
           #- cd tests/drivers
@@ -92,7 +94,7 @@ run_scripts:
   test:
     containers:
       container1:
-        image: 'mdi/qe'
+        image: 'mdi/qe-intel'
         script:
           - export LD_LIBRARY_PATH="/repo/build/q-e/mdi/build/mdi_build-prefix/src/mdi_build-build/MDI_Library:/repo/build/q-e/MDI/src"
           - cd tests/water
