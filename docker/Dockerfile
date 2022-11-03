@@ -2,7 +2,7 @@
 # Docker file for an MDI engine
 #------------------------------------------------------------#
 
-FROM mdi/base
+FROM intel/oneapi
 
 # copy the build script
 COPY .temp/build_image.sh .
