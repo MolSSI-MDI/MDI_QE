@@ -25,15 +25,15 @@ docker:
     - make -j 1 mdi
 
     # Build a copy of the MDI Library for testing purposes
-    - cd /repo
-    - |
-      if [ ! -d "build/MDI_Library" ]; then
-        git clone https://github.com/MolSSI-MDI/MDI_Library.git build/MDI_Library
-      fi
-    - mkdir -p build/MDI_Library/build
-    - cd build/MDI_Library/build
-    - cmake -Dtest_codes=ON ..
-    - make
+    #- cd /repo
+    #- |
+    #  if [ ! -d "build/MDI_Library" ]; then
+    #    git clone https://github.com/MolSSI-MDI/MDI_Library.git build/MDI_Library
+    #  fi
+    #- mkdir -p build/MDI_Library/build
+    #- cd build/MDI_Library/build
+    #- cmake -Dtest_codes=ON ..
+    #- make
 
 
   validate_engine:
