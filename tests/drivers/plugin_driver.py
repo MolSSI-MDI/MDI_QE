@@ -165,7 +165,7 @@ for i in range(2):
     plugin_mpi_comm = MPI.COMM_WORLD
     plugin = PluginInstance(cell, elements, coords)
     plugin.launch(args.plugin_name,
-                  args.plugin_command_line,
+                  args.plugin_command_line + " --mdi \"-role ENGINE -name QE -method LINK\"",
                   plugin_mpi_comm)
 
     # Displace the oxygen in the +y direction
