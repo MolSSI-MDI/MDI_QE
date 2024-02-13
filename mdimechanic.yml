@@ -8,6 +8,8 @@ docker:
     - pip install cmake
     - pip install pymdi
     - pip install mpi4py
+    
+    - echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/repo/build/q-e/mdi/build/mdi_build-prefix/src/mdi_build-build/MDI_Library:/repo/build/q-e/MDI/src" >> ~/.profile
 
   build_engine:
     - mkdir -p build
@@ -39,7 +41,7 @@ docker:
   validate_engine:
     - export LD_LIBRARY_PATH=/repo/build/q-e/mdi/build/mdi_build-prefix/src/mdi_build-build/MDI_Library
     - cd tests/water
-    #- mpirun -n 1 ../../build/q-e/PW/src/pw.x -in qe.in
+    - mpirun -n 1 ../../build/q-e/PW/src/pw.x -in qe.in
     
 engine_tests:
   # Provide at least one example input that can be used to test your code's MDI functionality
@@ -53,57 +55,19 @@ run_scripts:
   plugin:
     containers:
       container1:
-        image: 'mdi/qe'
+        image: 'mdi/qe:dev'
         script:
           - export OMP_NUM_THREADS=1
           - cd tests/water
           - mpiexec -n 2 python ../drivers/plugin_driver.py --plugin_name "qemdi" --mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src" --plugin_command_line "--in qe.in"
 
-  plugin_c:
-    containers:
-      container1:
-        image: 'mdi/qe'
-        script:
-          - cd tests/water
-          - ../../build/q-e/mdi/build/driver_plug_c -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
-
-  plugin_cxx:
-    containers:
-      container1:
-        image: 'mdi/qe'
-        script:
-          - cd tests/water
-          - ../../build/MDI_Library/build/driver_plug_cxx -driver_nranks 0 -plugin_nranks 1 -plugin_name qemdi -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
-
-  plugin_python:
-    containers:
-      container1:
-        image: 'mdi/qe'
-        script:
-          - export OMP_NUM_THREADS=1
-          #- cd tests/drivers
-          #- python plugin_driver.py -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
-          - cd tests/water
-          #- export LD_LIBRARY_PATH=/repo/build/MDI_Library/build/MDI_Library
-          #- export RPATH=/repo/build/MDI_Library/build/MDI_Library
-          #- python ../../build/MDI_Library/build/driver_plug_py.py -plugin_name qemdi -driver_nranks 0 -plugin_nranks 1 -mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
-          - mpiexec -n 2 python ../drivers/driver_plug_py.py --plugin_name "qemdi" --mdi "-role DRIVER -name driver -method LINK -plugin_path /repo/build/q-e/MDI/src"
-
   test:
     containers:
       container1:
-        image: 'mdi/qe'
+        image: 'mdi/qe:dev'
         script:
-          - export LD_LIBRARY_PATH="/repo/build/q-e/mdi/build/mdi_build-prefix/src/mdi_build-build/MDI_Library:/repo/build/q-e/MDI/src"
           - cd tests/water
           - /repo/build/q-e/PW/src/pw.x -in qe.in
-
-#engine_tests:
-  # Provide at least one example input that can be used to test your code's MDI functionality
-#  script:
-#    - export LD_LIBRARY_PATH=/repo/build/q-e/mdi/build/MDI_Library
-#    - cd tests/water
-#    - ../../build/q-e/PW/src/pw.x -in qe.in -mdi "${MDI_OPTIONS}"
 
 test_drivers:
   test_driver:
